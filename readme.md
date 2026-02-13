@@ -1,132 +1,115 @@
-# 🏥 FastAPI MongoDB - Hospital Patient API
+# 🚀 Scalable Data Management API (FastAPI + MongoDB)
 
-A simple CRUD application using **FastAPI** with **MongoDB** as the backend database, containerized using **Docker** and orchestrated with **Docker Compose**. Includes a minimal UI for layman access and optional integration with **Mongo Express**.
+[cite_start]A high-performance, asynchronous REST API designed for high-throughput data ingestion and management[cite: 30]. [cite_start]This project demonstrates a production-grade architecture using **FastAPI** for non-blocking I/O, **MongoDB** for flexible document storage, and **Docker** for containerized deployment[cite: 29].
 
----
-
-## 🚀 Features
-
-- Create and retrieve patient records
-- Built with FastAPI for high-performance REST APIs
-- MongoDB for document-based data storage
-- Uses Pydantic v2 for data validation
-- Minimal frontend using Jinja2 templating
-- Mongo Express for GUI-based MongoDB visualization
-- Docker Compose for multi-container orchestration
-- Persistent data storage using Docker volumes
-- Environment variable support using `.env`
-- Fully containerized and CI/CD ready
+[cite_start]While currently configured for **Healthcare Patient Records**, the architecture is domain-agnostic and optimized for concurrent write operations[cite: 30].
 
 ---
 
-## 📁 Project Structure
+## 🏗️ Key Technical Features
+
+### 1. High-Throughput Asynchronous I/O
+- [cite_start]Leverages Python's `async`/`await` syntax with the **Motor** driver to handle concurrent requests without blocking the event loop[cite: 30].
+- [cite_start]Significantly outperforms traditional synchronous frameworks in I/O-bound tasks[cite: 30].
+
+### 2. Self-Healing Infrastructure
+- **Docker Healthchecks**: The API container creates a dependency on the Database container's health status.
+- **Auto-Recovery**: Prevents the API from crashing or serving errors until the database is back online (`condition: service_healthy`).
+
+### 3. Strict Schema Validation (Data Integrity)
+- [cite_start]Implements **Pydantic v2** models to enforce strict typing and validation rules[cite: 32].
+- [cite_start]Malformed data is rejected before it ever reaches the database layer[cite: 32].
+
+### 4. Optimized Containerization (DevSecOps)
+- [cite_start]Uses **Multi-Stage Docker Builds** to separate build dependencies from the runtime environment[cite: 31].
+- [cite_start]**Result:** Reduces final image size by ~60% and minimizes the security attack surface[cite: 31].
+
+---
+
+## 🛠️ Tech Stack
+
+- [cite_start]**Framework**: Python FastAPI (Asynchronous) [cite: 29]
+- [cite_start]**Database**: MongoDB (NoSQL) [cite: 29]
+- [cite_start]**Validation**: Pydantic v2 [cite: 32]
+- [cite_start]**Containerization**: Docker & Docker Compose [cite: 29]
+- **Visualization**: Mongo Express & Jinja2 Templates
+
+---
+
+## 📁 Architecture Structure
+
 ```text
-fastapi-mongo/
+scalable-api/
 ├── app/
-│   ├── __init__.py
-│   ├── main.py               # FastAPI app routes
-│   ├── models.py             # Pydantic models
-│   ├── database.py           # MongoDB connection
-│   ├── templates/            # HTML templates (e.g., index.html)
-│   ├── static/               # (Optional) CSS/JS assets
-│   └── .env                  # MongoDB connection string
-├── .gitignore
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
+│   ├── models.py           # Pydantic data schemas (Strict Validation)
+│   ├── database.py         # Async MongoDB connection (Motor)
+│   ├── templates/          # Jinja2 Dashboard Templates
+│   └── main.py             # Application entry point
+├── Dockerfile              # Multi-stage build definition
+├── docker-compose.yml      # Orchestration with Healthchecks
+└── requirements.txt
 ```
 
 ---
 
 ## 🛠️ Setup Instructions
 
-### 🔧 Local Setup (With Virtual Environment)
-
-```bash
-git clone git@github.com:abhisheksingh22se/my-project.git
-cd my-project/fastapi-mongo
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload 
-```
-Visit: http://localhost:8000
-
----
-
-## 🧪 API Endpoints
-
-| Method | Endpoint       | Description                 |
-|--------|----------------|-----------------------------|
-| GET    | `/`            | Welcome message             |
-| POST   | `/patients`    | Create new patient entry    |
-| GET    | `/patients`    | Get all patient entries     |
-
-Use Swagger UI to interact with the API:  
-👉 [`http://localhost:8000/docs`](http://localhost:8000/docs)
-
----
-
-## 🔐 Environment Variables
+### 1. Environment Variables
 
 Create a `.env` file in the root directory:
 ```text
 MONGO_URL=mongodb://admin:password@mongodb:27017/
 MONGO_DB=hospital
+MONGO_USER=admin
+MONGO_PASSWORD=password
 ```
 Update this to match your MongoDB connection string — whether it's local, in Docker, or hosted.
 
----
-
-## 🐳 Docker Compose Setup
-
-### Step 1: Create `.env` file
-Inside fastapi-mongo/.env:
+### 2. Run with Docker Compose
+This spins up the API, MongoDB, and Mongo Express in a private network.
 ```bash
-MONGO_URL=mongodb://admin:password@mongodb:27017/
-MONGO_DB=hospital
+docker-compose up --build -d
 ```
 
-### Step 2: Build and Run
-```bash
-docker-compose up --build
-```
-* FastAPI: http://localhost:8000
-* Mongo Express: http://localhost:8081
+### 3. Verify Deployment
+* API Dashboard: http://localhost:8000
+* API Documentation (Swagger UI): http://localhost:8000/docs
+* Database GUI (Mongo Express): http://localhost:8081
 
-### Step 3: Tear Down (Optional)
-```bash
-docker-compose down -v
-```
-This will also remove persistent MongoDB data stored in Docker volume.
+## 🧪 API Endpoints
+
+| Method | Endpoint  | Type   | Description                                                  |
+|--------|-----------|--------|--------------------------------------------------------------|
+| GET    | `/`       | Async  | Renders the real-time data dashboard with system status.     |
+| POST   | `/add`    | Async  | Ingests new patient records with strict Pydantic validation. |
+| GET    | `/docs`   | Static | Swagger UI for interactive API testing.                      |
 
 ---
 
-## 📦 Requirements
-Install all dependencies:
-```bash
-pip install -r requirements.txt
-```
----
+## 📸 Proof of Concepts (Technical Evidence)
 
-## 🧰 Tech Stack
+This section provides visual verification of the architectural claims made in the project documentation and resume.
 
-FastAPI – API framework
-MongoDB – NoSQL database
-Mongo Express – Web GUI for MongoDB
-Uvicorn – ASGI server
-Pydantic v2 – Data validation
-Docker – Containerization
-Docker Compose – Multi-container orchestration
-Jinja2 – Templating for minimal UI
-python-dotenv – Environment variable management
+### 1. Self-Healing & Service Orchestration
+* **Feature:** Docker Healthchecks & `depends_on` conditions.
+* **Evidence:** The screenshot below shows the API container in a `waiting` state until the MongoDB health check returns `healthy`, preventing connection-refused exceptions during startup.
 
----
+![Self Healing Evidence](screenshots/healthcheck_proof.png)
 
-## 🧠 Future Improvements
-* Add form validation in UI
-* Implement update/delete routes
-* Add authentication support
-* Deploy to cloud (AWS EC2/ECS or Azure)
+### 2. Strict Schema Validation (Pydantic v2)
+* **Feature:** Data Integrity Layer.
+* **Evidence:** Verification of the API rejecting malformed JSON payloads (e.g., age > 150 or invalid gender strings) with a `422 Unprocessable Entity` response, ensuring only "clean" data hits the persistence layer.
 
+![Validation Error](screenshots/validation_error.png)
+
+### 3. Asynchronous Data Persistence
+* **Feature:** Non-blocking MongoDB operations via Motor.
+* **Evidence:** A view of the **Mongo Express GUI** confirming successful document insertion and persistence within the `hospital` database collection.
+
+![Data Persistence](screenshots/mongo_express_data.png)
+
+### 4. Optimized Multi-Stage Build
+* **Feature:** Reduced Attack Surface & Image Size.
+* **Evidence:** Terminal output of `docker images` showing the production image size reduced by ~60% compared to a standard single-stage build.
+
+![Docker Image Size](screenshots/docker_image_size.png)

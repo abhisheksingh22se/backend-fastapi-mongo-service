@@ -1,44 +1,32 @@
-from typing import Optional
-from pydantic import BaseModel, Field
-from bson import ObjectId
-from pydantic_core import core_schema
-from pydantic import GetCoreSchemaHandler
+from typing import Optional, Any
+from pydantic import BaseModel, Field, BeforeValidator
+from typing_extensions import Annotated
 
+PyObjectId = Annotated[str, BeforeValidator(str)]
 
-# ✅ Custom ObjectId type compatible with Pydantic v2
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler) -> core_schema.CoreSchema:
-        return core_schema.json_or_python_schema(
-            python_schema=core_schema.with_info_plain_validator_function(cls.validate),
-            json_schema=core_schema.str_schema()
-        )
-
-    @classmethod
-    def validate(cls, v, info):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid ObjectId")
-        return str(v)
-
-
-# ✅ Base model for shared patient fields
 class PatientBase(BaseModel):
-    name: str
-    age: int
-    gender: str
+    name: str = Field(..., min_length=1, description="Patient's full name")
+    age: int = Field(..., gt=0, lt=150, description="Patient's age")
+    gender: str = Field(..., pattern="^(Male|Female|Other)$")
     condition: str
+    disease: str  
 
-
-# ✅ Model for incoming data (POST request)
 class PatientCreate(PatientBase):
-    name: str
+    """Model used for validating incoming data"""
+    pass
 
-
-# ✅ Model for data returned to the client (includes MongoDB _id)
 class PatientResponse(PatientBase):
-    id: Optional[PyObjectId] = Field(alias="_id")
+    """Model used for returning data (handles _id conversion)"""
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
 
     class Config:
         populate_by_name = True
-        json_encoders = {ObjectId: str}
-        from_attributes = True
+        json_schema_extra = {
+            "example": {
+                "name": "John Doe",
+                "age": 30,
+                "gender": "Male",
+                "condition": "Stable",
+                "disease": "Flu"
+            }
+        }

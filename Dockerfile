@@ -1,22 +1,29 @@
-# Use an official Python runtime as a base image
-FROM python:3.9-slim
+# Stage 1: Builder 
+FROM python:3.10-slim as builder
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Set work directory in the container
 WORKDIR /app
 
-# Copy dependency file and install dependencies
+# Install build tools
+RUN apt-get update && apt-get install -y build-essential
+
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies to a local directory
+RUN pip install --user --no-cache-dir -r requirements.txt
 
-# Copy app code into container
-COPY . .
+# Stage 2: Runtime 
+FROM python:3.10-slim as runtime
 
-# Expose the port FastAPI runs on
+# Set environment variables for optimization
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH=/root/.local/bin:$PATH
+
+WORKDIR /app
+
+# Copy only the installed packages from builder
+COPY --from=builder /root/.local /root/.local
+COPY ./app ./app
+
 EXPOSE 8000
 
-# Run the app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
