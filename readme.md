@@ -1,4 +1,4 @@
-# 🚀 Scalable Data Management API (FastAPI + MongoDB)
+# Scalable Data Management API (FastAPI + MongoDB)
 
 A high-performance, asynchronous REST API designed for high-throughput data ingestion and management. This project demonstrates a production-grade architecture using **FastAPI** for non-blocking I/O, **MongoDB** for flexible document storage, and **Docker** for containerized deployment.
 
@@ -6,7 +6,7 @@ While currently configured for **Healthcare Patient Records**, the architecture 
 
 ---
 
-## 🏗️ Key Technical Features
+## Key Technical Features
 
 ### 1. High-Throughput Asynchronous I/O
 - Leverages Python's `async`/`await` syntax with the **Motor** driver to handle concurrent requests without blocking the event loop.
@@ -26,7 +26,7 @@ While currently configured for **Healthcare Patient Records**, the architecture 
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Python FastAPI (Asynchronous) 
 - **Database**: MongoDB (NoSQL) 
@@ -36,7 +36,7 @@ While currently configured for **Healthcare Patient Records**, the architecture 
 
 ---
 
-## 📁 Architecture Structure
+## Architecture Structure
 
 ```text
 scalable-api/
@@ -52,7 +52,7 @@ scalable-api/
 
 ---
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### 1. Environment Variables
 
@@ -86,7 +86,7 @@ docker-compose up --build -d
 
 ---
 
-## 📸 Proof of Concepts (Technical Evidence)
+## Proof of Concepts (Technical Evidence)
 
 This section provides visual verification of the architectural claims made in the project documentation and resume.
 
