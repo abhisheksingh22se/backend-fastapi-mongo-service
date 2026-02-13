@@ -1,37 +1,37 @@
 # 🚀 Scalable Data Management API (FastAPI + MongoDB)
 
-[cite_start]A high-performance, asynchronous REST API designed for high-throughput data ingestion and management[cite: 30]. [cite_start]This project demonstrates a production-grade architecture using **FastAPI** for non-blocking I/O, **MongoDB** for flexible document storage, and **Docker** for containerized deployment[cite: 29].
+A high-performance, asynchronous REST API designed for high-throughput data ingestion and management. This project demonstrates a production-grade architecture using **FastAPI** for non-blocking I/O, **MongoDB** for flexible document storage, and **Docker** for containerized deployment.
 
-[cite_start]While currently configured for **Healthcare Patient Records**, the architecture is domain-agnostic and optimized for concurrent write operations[cite: 30].
+While currently configured for **Healthcare Patient Records**, the architecture is domain-agnostic and optimized for concurrent write operations.
 
 ---
 
 ## 🏗️ Key Technical Features
 
 ### 1. High-Throughput Asynchronous I/O
-- [cite_start]Leverages Python's `async`/`await` syntax with the **Motor** driver to handle concurrent requests without blocking the event loop[cite: 30].
-- [cite_start]Significantly outperforms traditional synchronous frameworks in I/O-bound tasks[cite: 30].
+- Leverages Python's `async`/`await` syntax with the **Motor** driver to handle concurrent requests without blocking the event loop.
+- Significantly outperforms traditional synchronous frameworks in I/O-bound tasks.
 
 ### 2. Self-Healing Infrastructure
 - **Docker Healthchecks**: The API container creates a dependency on the Database container's health status.
 - **Auto-Recovery**: Prevents the API from crashing or serving errors until the database is back online (`condition: service_healthy`).
 
 ### 3. Strict Schema Validation (Data Integrity)
-- [cite_start]Implements **Pydantic v2** models to enforce strict typing and validation rules[cite: 32].
-- [cite_start]Malformed data is rejected before it ever reaches the database layer[cite: 32].
+- Implements **Pydantic v2** models to enforce strict typing and validation rules.
+- Malformed data is rejected before it ever reaches the database layer.
 
 ### 4. Optimized Containerization (DevSecOps)
-- [cite_start]Uses **Multi-Stage Docker Builds** to separate build dependencies from the runtime environment[cite: 31].
-- [cite_start]**Result:** Reduces final image size by ~60% and minimizes the security attack surface[cite: 31].
+- Uses **Multi-Stage Docker Builds** to separate build dependencies from the runtime environment.
+- **Result:** Reduces final image size by ~60% and minimizes the security attack surface.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- [cite_start]**Framework**: Python FastAPI (Asynchronous) [cite: 29]
-- [cite_start]**Database**: MongoDB (NoSQL) [cite: 29]
-- [cite_start]**Validation**: Pydantic v2 [cite: 32]
-- [cite_start]**Containerization**: Docker & Docker Compose [cite: 29]
+- **Framework**: Python FastAPI (Asynchronous) 
+- **Database**: MongoDB (NoSQL) 
+- **Validation**: Pydantic v2 
+- **Containerization**: Docker & Docker Compose
 - **Visualization**: Mongo Express & Jinja2 Templates
 
 ---
