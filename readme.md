@@ -88,28 +88,20 @@ docker-compose up --build -d
 
 ## Proof of Concepts (Technical Evidence)
 
-This section provides visual verification of the architectural claims made in the project documentation and resume.
-
 ### 1. Self-Healing & Service Orchestration
-* **Feature:** Docker Healthchecks & `depends_on` conditions.
-* **Evidence:** The screenshot below shows the API container in a `waiting` state until the MongoDB health check returns `healthy`, preventing connection-refused exceptions during startup.
-
 ![Self Healing Evidence](screenshots/healthcheck_proof.png)
+*The screenshot shows the API container in a `waiting` state until the MongoDB health check returns `healthy`, preventing connection-refused exceptions during startup.*
 
 ### 2. Strict Schema Validation (Pydantic v2)
-* **Feature:** Data Integrity Layer.
-* **Evidence:** Verification of the API rejecting malformed JSON payloads (e.g., age > 150 or invalid gender strings) with a `422 Unprocessable Entity` response, ensuring only "clean" data hits the persistence layer.
-
 ![Validation Error](screenshots/validation_error.png)
+*Verification of the API rejecting malformed JSON payloads (e.g., age > 150 or invalid gender strings) with a `422 Unprocessable Entity` response, ensuring only "clean" data hits the persistence layer.*
 
 ### 3. Asynchronous Data Persistence
-* **Feature:** Non-blocking MongoDB operations via Motor.
-* **Evidence:** A view of the **Mongo Express GUI** confirming successful document insertion and persistence within the `hospital` database collection.
-
 ![Data Persistence](screenshots/mongo_express_data.png)
+*A view of the **Mongo Express GUI** confirming successful document insertion and persistence within the `hospital` database collection.*
 
 ### 4. Optimized Multi-Stage Build
-* **Feature:** Reduced Attack Surface & Image Size.
-* **Evidence:** Terminal output of `docker images` showing the production image size reduced by ~60% compared to a standard single-stage build.
-
 ![Docker Image Size](screenshots/docker_image_size.png)
+*Terminal output of `docker images` showing the production image size reduced by ~60% compared to a standard single-stage build.*
+
+
